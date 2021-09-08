@@ -6,22 +6,22 @@ import com.example.kanbanboard.model.Task
 
 object DataManger {
 
-//    var listTaskBacklog = mutableListOf<Task>()
-//    var listTaskProgress = mutableListOf<Task>()
-//    var listTaskDone = mutableListOf<Task>()
+    var listTaskBacklog = mutableListOf<Task>()
+    var listTaskProgress = mutableListOf<Task>()
+    var listTaskDone = mutableListOf<Task>()
 
-//    val listBackLog: List<Task>
-//        get() = listTaskBacklog
-//
-//    val listProgress: List<Task>
-//        get() = listTaskProgress
-//
-//    val listDone: List<Task>
-//        get() = listTaskDone
+    val listBackLog: List<Task>
+        get() = listTaskBacklog
 
-//    fun addTaskBacklog(task: Task) = listTaskBacklog.add(task)
-//    fun addTaskProgress(task: Task) = listTaskProgress.add(task)
-//    fun addTaskDone(task: Task) = listTaskDone.add(task)
+    val listProgress: List<Task>
+        get() = listTaskProgress
+
+    val listDone: List<Task>
+        get() = listTaskDone
+
+    fun addTaskBacklog(task: Task) = listTaskBacklog.add(task)
+    fun addTaskProgress(task: Task) = listTaskProgress.add(task)
+    fun addTaskDone(task: Task) = listTaskDone.add(task)
 
     fun listTaskBacklog(context: Context) = TaskDBHelper(context).listTask(Constants.TaskStatus.BACKLOG)
     fun listTaskProgress(context: Context) = TaskDBHelper(context).listTask(Constants.TaskStatus.PROGRESS)
