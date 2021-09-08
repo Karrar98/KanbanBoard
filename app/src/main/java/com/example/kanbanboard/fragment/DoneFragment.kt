@@ -4,23 +4,37 @@ import android.view.LayoutInflater
 import com.example.kanbanboard.helper.TaskDBHelper
 import com.example.kanbanboard.adapter.TaskViewAdapter
 import com.example.kanbanboard.databinding.TaskFragmentBinding
+import com.example.kanbanboard.interfaces.CallBackOptionDB
+import com.example.kanbanboard.model.Task
 import com.example.kanbanboard.utails.DataManger
 
-class DoneFragment: BaseFragment<TaskFragmentBinding>() {
+class DoneFragment: BaseFragment<TaskFragmentBinding>(), CallBackOptionDB {
     override val LOG_TAG: String = ""
     override val bindingInflater: (LayoutInflater) -> TaskFragmentBinding = TaskFragmentBinding::inflate
 
     lateinit var adapter: TaskViewAdapter
 
-    private lateinit var db: TaskDBHelper
-
     override fun setup() {
-        db = context?.let { TaskDBHelper(it) }!!
         adapter = TaskViewAdapter(DataManger.listTaskDone(requireContext()))
         binding?.taskRecyclerView?.adapter = adapter
     }
 
     override fun addCallBack() {
 
+    }
+
+    override fun addTask(task: Task) {
+        DataManger.addTask(requireContext(), task)
+        adapter.setData(DataManger.listDone)
+    }
+
+    override fun updateTask(task: Task) {
+        DataManger.updateTask(requireContext(), task)
+        adapter.setData(DataManger.listDone)
+    }
+
+    override fun deleteTask(taskId: Int) {
+        DataManger.deleteTask(requireContext(), taskId)
+        adapter.setData(DataManger.listDone)
     }
 }

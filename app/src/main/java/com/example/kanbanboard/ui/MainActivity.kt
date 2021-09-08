@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import androidx.fragment.app.Fragment
 import com.example.kanbanboard.R
 import com.example.kanbanboard.helper.TaskDBHelper
 import com.example.kanbanboard.adapter.ViewPagerAdapter
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity(){
     private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
     private lateinit var customAlertDialogView : View
 
-    private val fragments = listOf(
+    private val fragments: List<Fragment> = listOf(
         BacklogFragment(),
         ProgressFragment(),
         DoneFragment(),

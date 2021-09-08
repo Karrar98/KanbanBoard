@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kanbanboard.R
 import com.example.kanbanboard.databinding.TaskViewBinding
+import com.example.kanbanboard.interfaces.CallBackOptionDB
 import com.example.kanbanboard.model.Task
 import com.example.kanbanboard.utails.Constants
 import com.example.kanbanboard.utails.DataManger
@@ -21,6 +22,7 @@ class TaskViewAdapter(var taskList: List<Task>): RecyclerView.Adapter<TaskViewAd
     private var colorPaletteIsVisible: Boolean = false
     private lateinit var colorPaletteViews: List<View>
     private lateinit var deleteDialog: MaterialAlertDialogBuilder
+    private var callback: CallBackOptionDB? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         // set context
@@ -71,7 +73,6 @@ class TaskViewAdapter(var taskList: List<Task>): RecyclerView.Adapter<TaskViewAd
                     else -> throw Exception("Unrecognized taskList type")
                 }
                 DataManger.updateTask(context, task)
-                notifyDataSetChanged()
             }
 //            btnDrag.setOnTouchListener { v, event ->
 //                if (event.actionMasked == MotionEvent.ACTION_DOWN)
