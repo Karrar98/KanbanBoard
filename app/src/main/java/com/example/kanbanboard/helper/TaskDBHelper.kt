@@ -25,10 +25,10 @@ class TaskDBHelper(context: Context) : SQLiteOpenHelper(context, DBNAME, null, D
     }
 
 
-    fun listTask(status: String): List<Task> {
+    fun listTask(status: String): MutableList<Task> {
         val sql = "select * from ${Constants.DB.TABLE_NAME} where ${Constants.DB.TASKSTATUS} = ?"
         val db = this.readableDatabase
-        val storeTask = arrayListOf<Task>()
+        val storeTask = mutableListOf<Task>()
         val cursor: Cursor = db.rawQuery(sql, arrayOf(status))
         while (cursor.moveToNext()) {
             val taskId = cursor.getString(0).toInt()

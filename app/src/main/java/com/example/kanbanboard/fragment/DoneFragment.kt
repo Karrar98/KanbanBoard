@@ -1,6 +1,8 @@
 package com.example.kanbanboard.fragment
 
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import com.example.kanbanboard.helper.TaskDBHelper
 import com.example.kanbanboard.adapter.TaskViewAdapter
 import com.example.kanbanboard.databinding.TaskFragmentBinding
@@ -13,28 +15,35 @@ class DoneFragment: BaseFragment<TaskFragmentBinding>(), CallBackOptionDB {
     override val bindingInflater: (LayoutInflater) -> TaskFragmentBinding = TaskFragmentBinding::inflate
 
     lateinit var adapter: TaskViewAdapter
+    lateinit var dataManger: DataManger
 
     override fun setup() {
-        adapter = TaskViewAdapter(DataManger.listTaskDone(requireContext()))
+        dataManger = DataManger(requireContext())
+        adapter = TaskViewAdapter(dataManger.listDone,this)
         binding?.taskRecyclerView?.adapter = adapter
+        binding?.fabAdd?.visibility = View.GONE
     }
 
     override fun addCallBack() {
 
     }
 
-    override fun addTask(task: Task) {
-        DataManger.addTask(requireContext(), task)
-        adapter.setData(DataManger.listDone)
+    override fun addTask(context: Context, task: Task) {
+        dataManger.addTask(context, task)
+        adapter.setData(dataManger.listDone)
     }
 
-    override fun updateTask(task: Task) {
-        DataManger.updateTask(requireContext(), task)
-        adapter.setData(DataManger.listDone)
+    override fun updateTask(context: Context, from: String, task: Task) {
+        dataManger.updateTask(context, from, task)
+        adapter.setData(dataManger.listDone)
     }
 
-    override fun deleteTask(taskId: Int) {
-        DataManger.deleteTask(requireContext(), taskId)
-        adapter.setData(DataManger.listDone)
+    override fun deleteTask(context: Context, task: Task) {
+        dataManger.deleteTask(context, task)
+        adapter.setData(dataManger.listDone)
+    }
+
+    override fun updateTaskColor(context: Context, task: Task) {
+        dataManger.updateColorTask(context, task)
     }
 }

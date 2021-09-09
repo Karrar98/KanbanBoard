@@ -15,20 +15,22 @@ import com.example.kanbanboard.utails.Constants
 import com.example.kanbanboard.utails.DataManger
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class TaskViewAdapter(var taskList: List<Task>): RecyclerView.Adapter<TaskViewAdapter.TaskViewHolder>() {
+class TaskViewAdapter(private var taskList: List<Task>, private val listener: CallBackOptionDB): RecyclerView.Adapter<TaskViewAdapter.TaskViewHolder>() {
 
     private lateinit var context: Context
     private lateinit var visibleColorPaletteViewList: List<View>
     private var colorPaletteIsVisible: Boolean = false
     private lateinit var colorPaletteViews: List<View>
     private lateinit var deleteDialog: MaterialAlertDialogBuilder
-    private var callback: CallBackOptionDB? = null
+    lateinit var dataManger: DataManger
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         // set context
         context = parent.context
         //Inflate the desired task view
         val view = LayoutInflater.from(context).inflate(R.layout.task_view, parent, false)
+
+        dataManger = DataManger(context)
 
         deleteDialog = MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.delete_dialog_title)
@@ -62,17 +64,18 @@ class TaskViewAdapter(var taskList: List<Task>): RecyclerView.Adapter<TaskViewAd
                 deleteDialog.setPositiveButton(R.string.delete_dialog_yes_button_label)
                 { _, _ ->
                     //Delete task from db and notify adapter
-                    task.taskId?.let { taskId -> DataManger.deleteTask(context, taskId) }
+                    listener.deleteTask(context, task)
                     notifyDataSetChanged()
                 }.create().show()
             }
             btnMove.setOnClickListener {
+                val from = task.taskStatus
                 task.taskStatus = when(task.taskStatus){
                     Constants.TaskStatus.BACKLOG, Constants.TaskStatus.DONE -> Constants.TaskStatus.PROGRESS
                     Constants.TaskStatus.PROGRESS -> Constants.TaskStatus.DONE
                     else -> throw Exception("Unrecognized taskList type")
                 }
-                DataManger.updateTask(context, task)
+                listener.updateTask(context, from, task)
             }
 //            btnDrag.setOnTouchListener { v, event ->
 //                if (event.actionMasked == MotionEvent.ACTION_DOWN)
@@ -139,7 +142,7 @@ class TaskViewAdapter(var taskList: List<Task>): RecyclerView.Adapter<TaskViewAd
                     }
 
                     task.color = colorResId
-                    DataManger.updateColorTask(context, task)
+                    listener.updateTaskColor(context, task)
                 }
             }
 
