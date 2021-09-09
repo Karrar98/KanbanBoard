@@ -23,8 +23,6 @@ class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var databaseHelper: TaskDBHelper
-    private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
-    private lateinit var customAlertDialogView : View
 
     private val fragments: List<Fragment> = listOf(
         BacklogFragment(),
@@ -43,9 +41,7 @@ class MainActivity : AppCompatActivity(){
     private fun setUp() {
         setUpViewPager()
         setUpTabLayout()
-        materialAlertDialogBuilder = MaterialAlertDialogBuilder(this)
         databaseHelper = TaskDBHelper(this)
-        binding.fabAdd.setOnClickListener { addTask() }
     }
 
     private fun setUpViewPager() {
@@ -61,38 +57,5 @@ class MainActivity : AppCompatActivity(){
                 else -> getString(R.string.tab_label_done)
             }
         }.attach()
-    }
-
-    private fun addTask() {
-        // Inflate Custom alert dialog view
-        customAlertDialogView = LayoutInflater.from(this)
-            .inflate(R.layout.add_task_dialog, null, false)
-        val binding: AddTaskDialogBinding = AddTaskDialogBinding.bind(customAlertDialogView)
-
-        // Launching the custom alert dialog
-        // Building the Alert dialog using materialAlertDialogBuilder instance
-        materialAlertDialogBuilder.setView(customAlertDialogView)
-            .setTitle("Task")
-            .setMessage("Enter your Task details")
-            .setPositiveButton("Add Task") { dialog, _ ->
-                binding.apply {
-                    val taskName = txtNameTask.editText?.text.toString()
-                    val taskDescription = txtDescriptionTask.editText?.text.toString()
-                    val taskColor = R.drawable.task_card_yellow
-                    val task = Task(
-                        taskId = null,
-                        taskName = taskName,
-                        taskDescription = taskDescription,
-                        taskStatus = Constants.TaskStatus.BACKLOG,
-                        color = taskColor
-                    )
-                    DataManger.addTask(this@MainActivity, task)
-                }
-                dialog.dismiss()
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
     }
 }
