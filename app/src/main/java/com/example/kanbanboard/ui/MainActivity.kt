@@ -22,7 +22,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var databaseHelper: TaskDBHelper
 
     private val fragments: List<Fragment> = listOf(
         BacklogFragment(),
@@ -41,7 +40,6 @@ class MainActivity : AppCompatActivity(){
     private fun setUp() {
         setUpViewPager()
         setUpTabLayout()
-        databaseHelper = TaskDBHelper(this)
     }
 
     private fun setUpViewPager() {
